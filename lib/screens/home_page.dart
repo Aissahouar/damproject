@@ -1,5 +1,14 @@
+import 'package:damproject/mesumes.dart';
+import 'package:damproject/screens/details.dart';
+import 'package:damproject/screens/wlcome_page.dart';
 import 'package:damproject/utilities/colors.dart';
 import 'package:flutter/material.dart';
+import '../cafesandrestaurent.dart';
+import '../historical_sites.dart';
+import '../model/place_model.dart';
+import '../category_card.dart';
+import '../other_places.dart';
+import '../recommanded.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +22,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      bottomNavigationBar: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                Icons.home,
+                size: 40,
+                color: Primaryclr,
+              ),
+              Icon(
+                Icons.calendar_month,
+                size: 40,
+              ),
+              Icon(
+                Icons.bookmark,
+                size: 40,
+              ),
+              Icon(
+                Icons.comment,
+                size: 40,
+              ),
+            ],
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -22,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const CircleAvatar(
                     radius: 27,
-                    backgroundImage: AssetImage('assets/sea.webp'),
+                    backgroundImage: AssetImage('assets/user.webp'),
                   ),
                   const SizedBox(
                     width: 15,
@@ -86,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icons.sort_by_alpha_sharp,
                             color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -118,80 +154,98 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Category(
-                          image: 'assets/mountains.jpeg',
-                          press: () {},
-                          title: "mountaines",
+                          image: 'assets/tipaza.jpeg',
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return VisitPlacesScreen();
+                            }));
+                          },
+                          title: "Museums",
                         ),
                         Category(
-                          image: 'assets/sea.webp',
-                          press: () {},
-                          title: "Seas",
+                          image: 'assets/constantine.jpeg',
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return VisitPlacesScreen1();
+                            }));
+                          },
+                          title: "Cafes and restaurants",
                         ),
                         Category(
-                          image: 'assets/forests.jpeg',
-                          press: () {},
-                          title: "Forests",
+                          image: 'assets/jmila.jpeg',
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return VisitPlacesScreen2();
+                            }));
+                          },
+                          title: "Historical Sites",
                         ),
                         Category(
-                          image: 'assets/deserts.jpeg',
-                          press: () {},
-                          title: "Desserts",
+                          image: 'assets/tizi.jpeg',
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return VisitPlacesScreen3();
+                            }));
+                          },
+                          title: "Other Places",
                         ),
                       ],
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+              ),
 
-class Category extends StatelessWidget {
-  final String title, image;
-  final VoidCallback press;
-  const Category({
-    super.key,
-    required this.title,
-    required this.image,
-    required this.press,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: InkWell(
-        onTap: press,
-        child: Material(
-          elevation: 5,
-          borderRadius: BorderRadius.circular(100),
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(100)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
+              //recomanded
+              const SizedBox(
+                height: 10,
+              ),
+              const Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: AssetImage(image),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
                   Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                    'Recomanded',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 280,
+                child: ListView.builder(
+                  itemCount: places.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: Row(
+                        children: [
+                          RecomandedCard(
+                            placeInfo: places[index],
+                            press: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      Details(placeInfo: places[index]),
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
